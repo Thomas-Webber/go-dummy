@@ -18,6 +18,10 @@ run: ## Run docker image
 ##
 ## Kubernetes
 deploy: ## Deploy to kubernetes by creating a deployment
-	kubectl create deployment go-dummy --image 
+	kubectl create deployment go-dummy --image ${IMAGE}:${TAG}
 
 expose: ## Deploy
+	kubectl expose deployment go-dummy --port 8080 --target-port 8080
+
+ingress: ## Create route
+	 oc create route edge --service go-dummy --port 8080
