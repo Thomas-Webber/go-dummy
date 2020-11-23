@@ -1,11 +1,23 @@
-TAG=v0.0.1
-NAME=xelit/go-api
 
-build:
-	docker build . -t $(NAME):$(TAG)
+help:
+	@fgrep -h "##" Makefile | fgrep -v "fgrep" | sed -r 's/(.*):.*##(.*)/\1:\2/' - | column -s: -t | sed -e 's/##//'
 
-push:
-	docker push $(NAME):$(TAG)
+## Docker
+login: ## Login to registry
+	docker login quay.io
 
-run:
-	docker run -it -p 8080:8080 $(NAME):$(TAG)
+build: ## Build docker image and add tags
+	docker build . -t ${IMAGE}:${TAG}
+
+push: ## Push docker image to repository
+	docker push ${IMAGE}:${TAG}
+
+run: ## Run docker image
+	docker run -it -p 8080:8080 ${IMAGE}:${TAG}
+
+##
+## Kubernetes
+deploy: ## Deploy to kubernetes by creating a deployment
+	kubectl create deployment go-dummy --image 
+
+expose: ## Deploy
